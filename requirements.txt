@@ -1,0 +1,8 @@
+crewai
+langchain_groq
+pymongo
+requests
+python-dotenv
+beautifulsoup4
+duckduckgo-search
+python-telegram-bot

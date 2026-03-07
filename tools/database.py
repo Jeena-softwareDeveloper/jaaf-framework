@@ -34,7 +34,48 @@ class JeenoraDB:
             return f"Order {order_id} is currently: {order.get('status', 'Processing')}"
         return "Order not found."
 
-    def get_product_list(self, category):
-        # Example: Fetch top items in a category
-        products = list(self.db[category].find().limit(5))
-        return [p.get('name') for p in products]
+    def get_agents(self):
+        """Fetches all agent configurations."""
+        agents = list(self.db.agents.find())
+        for a in agents:
+            a["id"] = str(a.pop("_id"))
+        return agents
+
+    def get_agent(self, agent_id):
+        """Fetches a single agent by ID."""
+        from bson import ObjectId
+        agent = self.db.agents.find_one({"_id": ObjectId(agent_id)})
+        if agent:
+            agent["id"] = str(agent.pop("_id"))
+        return agent
+
+    def save_agent(self, agent_data):
+        """Saves or updates an agent configuration."""
+        from bson import ObjectId
+        agent_id = agent_data.pop("id", None)
+        if agent_id:
+            self.db.agents.update_one({"_id": ObjectId(agent_id)}, {"$set": agent_data}, upsert=True)
+            return agent_id
+        else:
+            result = self.db.agents.insert_one(agent_data)
+            return str(result.inserted_id)
+
+    def delete_agent(self, agent_id):
+        """Deletes an agent configuration."""
+        from bson import ObjectId
+        return self.db.agents.delete_one({"_id": ObjectId(agent_id)}).deleted_count > 0
+
+    def get_ceo_config(self):
+        """Legacy support for CEO - fetches the agent marked as CEO or returns defaults."""
+        ceo = self.db.agents.find_one({"role": {"$regex": "CEO", "$options": "i"}})
+        if ceo:
+            ceo["id"] = str(ceo.pop("_id"))
+            return ceo
+        return {
+            "name": "Jeenora CEO",
+            "role": "Jeenora Group CEO",
+            "goal": "Ensure overall profit and business growth.",
+            "backstory": "You are the digital CEO of Jeenora.",
+            "model": "gpt-oss:120b-cloud",
+            "temperature": 0.7
+        }

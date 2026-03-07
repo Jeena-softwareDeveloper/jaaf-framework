@@ -1,0 +1,21 @@
+Chat request: Hello from testing
+Model: 'tinyllama'
+URL: 'http://127.0.0.1:11434'
+Chat request: Hello from testing
+Model: 'tinyllama:latest'
+URL: 'http://127.0.0.1:11434'
+Chat request: Hello from testing
+Model: 'llama3.1:8b'
+URL: 'http://127.0.0.1:11434'
+Chat request: Hello from testing
+Model: 'llama3.1:8b'
+URL: 'http://127.0.0.1:11434'
+Chat request: Hello from testing
+Model: 'llama3.1:8b'
+URL: 'http://127.0.0.1:11434'
+Chat request: Hello from testing
+Model: 'tinyllama'
+URL: 'http://127.0.0.1:11434'
+Chat request: Hello from testing
+Model: 'llama3.1:8b'
+URL: 'http://127.0.0.1:11434'

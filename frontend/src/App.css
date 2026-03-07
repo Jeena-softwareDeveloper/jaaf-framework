@@ -1,107 +1,47 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0f0f1a;
-  color: #e0e0ff;
-  min-height: 100vh;
+/* Modern Overrides & Global Utilities */
+:root {
+  --accent: #8b5cf6;
+  --bg-main: #0a0a0f;
 }
 
-.app-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
 }
 
-.header {
-  text-align: center;
-  padding: 30px 0;
-  border-bottom: 1px solid #2a2a4a;
-  margin-bottom: 30px;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
 }
 
-.header h1 { font-size: 2rem; color: #a78bfa; }
-.header p { color: #6b6b9a; margin-top: 6px; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 10px;
 }
 
-.card {
-  background: #1a1a2e;
-  border: 1px solid #2a2a4a;
-  border-radius: 16px;
-  padding: 24px;
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
 }
 
-.card h2 { font-size: 1.1rem; margin-bottom: 16px; color: #c4b5fd; }
+/* Animations */
+@keyframes glow {
 
-/* Dashboard */
-.stats { display: flex; gap: 12px; justify-content: space-between; }
-.stat-box {
-  flex: 1; text-align: center; padding: 16px;
-  border-radius: 12px; display: flex; flex-direction: column; gap: 6px;
-}
-.stat-box span { font-size: 0.8rem; color: #999; }
-.stat-box strong { font-size: 2rem; font-weight: 700; }
-.agri { background: #0d2e1a; border: 1px solid #1a5c34; }
-.agri strong { color: #4ade80; }
-.cloth { background: #1a0d2e; border: 1px solid #5c1a9e; }
-.cloth strong { color: #c084fc; }
-.crm { background: #1a1a0d; border: 1px solid #7a6f00; }
-.crm strong { color: #fbbf24; }
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.3));
+  }
 
-button {
-  margin-top: 16px; width: 100%; padding: 12px;
-  background: #7c3aed; color: white; border: none;
-  border-radius: 10px; cursor: pointer; font-size: 0.95rem;
-  transition: background 0.2s;
-}
-button:hover { background: #6d28d9; }
-button:disabled { background: #4a4a6a; cursor: not-allowed; }
-
-.report { margin-top: 16px; background: #0f0f1a; padding: 16px; border-radius: 8px; }
-.report h3 { color: #a78bfa; margin-bottom: 8px; }
-.report p { font-size: 0.85rem; line-height: 1.6; color: #ccc; }
-
-/* Agent Status */
-.agent-list { display: flex; flex-direction: column; gap: 10px; }
-.agent-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px; background: #0f0f1a; border-radius: 10px;
-}
-.agent-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.agent-dot.active { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
-.agent-item div { flex: 1; display: flex; flex-direction: column; }
-.agent-item strong { font-size: 0.9rem; }
-.agent-item small { color: #666; font-size: 0.75rem; }
-.badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 20px; background: #1e3a2a; color: #4ade80; }
-.badge.green { background: #1e3a2a; color: #4ade80; }
-
-/* Chat */
-.chatbox { display: flex; flex-direction: column; height: 400px; }
-.chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-.msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; }
-.msg.user { align-self: flex-end; background: #7c3aed; color: white; border-radius: 12px 12px 0 12px; }
-.msg.bot { align-self: flex-start; background: #1e1e3a; color: #e0e0ff; border-radius: 12px 12px 12px 0; }
-.chat-input { display: flex; gap: 10px; }
-.chat-input input {
-  flex: 1; padding: 10px 14px; background: #0f0f1a;
-  border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 0.9rem;
-}
-.chat-input button { width: 80px; margin-top: 0; }
-
-/* LLM Connect */
-.llm-info { display: flex; flex-direction: column; gap: 14px; }
-.llm-row { display: flex; align-items: center; gap: 12px; }
-.llm-row label { width: 120px; color: #777; font-size: 0.85rem; }
-.llm-row select {
-  flex: 1; padding: 8px; background: #0f0f1a;
-  border: 1px solid #2a2a4a; border-radius: 8px; color: white;
+  50% {
+    filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.6));
+  }
 }
 
-@media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; }
+.drop-shadow-glow {
+  animation: glow 3s infinite;
+}
+
+/* Utility for text gradients if tailwind version doesn't support it directly */
+.text-gradient {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

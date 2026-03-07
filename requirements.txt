@@ -1,8 +1,11 @@
 crewai
-langchain_groq
+langchain-community
+langchain-groq
 pymongo
-requests
 python-dotenv
 beautifulsoup4
 duckduckgo-search
 python-telegram-bot
+fastapi
+uvicorn
+pydantic

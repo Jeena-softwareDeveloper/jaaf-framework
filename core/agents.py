@@ -1,12 +1,13 @@
 from crewai import Agent
-from langchain_groq import ChatGroq
+from langchain_community.llms import Ollama
 from config import settings
+import os
 
-# Initialize Brain (LLM)
-llm = ChatGroq(
-    groq_api_key=settings.GROQ_API_KEY,
-    model_name="deepseek-r1-distill-llama-70b"
-)
+# CrewAI requires this env var (set dummy if not using OpenAI)
+os.environ["OPENAI_API_KEY"] = "sk-dummy-not-used"
+
+# Use Local Ollama model - FREE, No API Cost!
+llm = Ollama(model="llama3.1:8b")
 
 # 1. THE CEO AGENT
 ceo_agent = Agent(

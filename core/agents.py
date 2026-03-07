@@ -369,7 +369,144 @@ def get_agent_response(role_key, user_input):
     messages = [("system", f"You are a Jeenora {role_key}."), ("human", user_input)]
     return llm.invoke(messages).content
 
-async def get_dynamic_agent_response(role_name, role_goal, role_backstory, user_input, model_name, temperature, target_url="", git_repo="", status_callback=None):
-    """Single-agent execution with tools enabled (used by Telegram Bot)."""
+def _detect_task_type(user_input: str) -> str:
+    """Detect what kind of task the user is requesting."""
+    text = user_input.lower()
+    # URL / website detection
+    if any(kw in text for kw in ["http", ".com", ".in", ".org", ".net", "website", "site", "seo", "analyze", "audit", "pagespeed", "broken link", "keyword"]):
+        return "seo"
+    if any(kw in text for kw in ["inventory", "stock", "dress", "clothes", "fashion", "restock"]):
+        return "inventory"
+    if any(kw in text for kw in ["lead", "crm", "customer", "follow up", "followup", "unreplied"]):
+        return "crm"
+    if any(kw in text for kw in ["sales", "revenue", "report", "daily", "weekly", "monthly"]):
+        return "sales"
+    if any(kw in text for kw in ["competitor", "rival", "competition"]):
+        return "competitor"
+    if any(kw in text for kw in ["trend", "market", "agri", "agriculture", "farm", "seed"]):
+        return "market"
+    return "general"
+
+async def run_ceo_with_delegation(ceo_config, user_input, status_callback=None):
+    """
+    CEO receives user request → detects task type → delegates to specialist agent → 
+    CEO compiles final report.
+    """
+    ceo_model = ceo_config.get("model", "gpt-oss:120b-cloud")
+    ceo_temp  = ceo_config.get("temperature", 0.7)
+    ceo_role  = ceo_config.get("role", "Master Controller CEO")
+    ceo_goal  = ceo_config.get("goal", "Run Jeenora effectively")
+    ceo_back  = ceo_config.get("backstory", "You are the highest authority AI.")
+
+    task_type = _detect_task_type(user_input)
+    logger.info(f"[CEO Delegation] Detected task type: '{task_type}' for input: {user_input[:60]}...")
+
+    specialist_report = ""
+
+    # --- DELEGATE TO SPECIALIST AGENTS ---
+    if task_type == "seo":
+        if status_callback:
+            await status_callback("🔍 *CEO → Delegating to SEO Agent...* Analyzing website now.")
+        seo_llm = get_llm(ceo_model, 0.3, role="SEO Agent")
+        specialist_report = await invoke_agent(
+            seo_llm, "SEO Agent",
+            "Perform deep SEO, PageSpeed, and keyword analysis for any website.",
+            "You are a specialized SEO Engineer. You use analyze_website_full, seo_analyzer, keyword_researcher, broken_link_finder, and competitor_finder to produce a full professional SEO report.",
+            f"TASK: {user_input}\nPlease run a complete SEO audit and provide specific improvement recommendations.",
+            status_callback=status_callback
+        )
+        logger.info(f"[CEO Delegation] SEO Agent report received ({len(specialist_report)} chars).")
+
+    elif task_type == "inventory":
+        if status_callback:
+            await status_callback("📦 *CEO → Delegating to Fashion Manager...* Checking inventory.")
+        inv_llm = get_llm(ceo_model, 0.3, role="Fashion Manager")
+        specialist_report = await invoke_agent(
+            inv_llm, "Fashion Manager",
+            "Manage dress inventory and suggest restocks.",
+            "You are the Fashion & Inventory Manager. Use inventory_checker, trend_analyzer.",
+            f"TASK: {user_input}"
+        )
+
+    elif task_type == "crm":
+        if status_callback:
+            await status_callback("🤝 *CEO → Delegating to CRM Specialist...* Checking leads.")
+        crm_llm = get_llm(ceo_model, 0.3, role="CRM Specialist")
+        specialist_report = await invoke_agent(
+            crm_llm, "CRM Specialist",
+            "Track and convert CRM leads.",
+            "You are the CRM Specialist. Use crm_lead_tracker, sentiment_analyzer, telegram_alert.",
+            f"TASK: {user_input}"
+        )
+
+    elif task_type == "sales":
+        if status_callback:
+            await status_callback("📊 *CEO → Delegating to CFO...* Pulling sales report.")
+        cfo_llm = get_llm(ceo_model, 0.3, role="CFO")
+        specialist_report = await invoke_agent(
+            cfo_llm, "CFO",
+            "Generate sales and revenue reports.",
+            "You are the CFO. Use sales_reporter and trend_analyzer.",
+            f"TASK: {user_input}"
+        )
+
+    elif task_type == "competitor":
+        if status_callback:
+            await status_callback("🥊 *CEO → Delegating to CMO...* Analyzing competitors.")
+        cmo_llm = get_llm(ceo_model, 0.3, role="CMO")
+        specialist_report = await invoke_agent(
+            cmo_llm, "CMO",
+            "Research competitors and market positioning.",
+            "You are the CMO. Use competitor_finder, web_search, keyword_researcher, trend_analyzer.",
+            f"TASK: {user_input}"
+        )
+
+    elif task_type == "market":
+        if status_callback:
+            await status_callback("🌾 *CEO → Delegating to Agri Manager...* Checking market trends.")
+        agri_llm = get_llm(ceo_model, 0.3, role="Agri Manager")
+        specialist_report = await invoke_agent(
+            agri_llm, "Agri Manager",
+            "Analyze agri market trends and optimize supply chain.",
+            "You are the Agri Manager. Use web_search, trend_analyzer, news_fetcher.",
+            f"TASK: {user_input}"
+        )
+
+    # --- CEO COMPILES FINAL DECISION ---
+    if status_callback:
+        await status_callback("👑 *CEO Compiling Final Report...* Almost done.")
+
+    ceo_llm = get_llm(ceo_model, ceo_temp, role=ceo_role)
+
+    if specialist_report:
+        ceo_synthesis_task = (
+            f"You are the CEO. A specialist agent has completed this task and sent you their report.\n\n"
+            f"USER REQUEST: {user_input}\n\n"
+            f"SPECIALIST REPORT:\n{specialist_report}\n\n"
+            f"Your job: Write a concise, professional CEO-level summary. "
+            f"Highlight the KEY FINDINGS, 3 action items, and any urgent alerts. "
+            f"Be direct and business-focused. Do NOT repeat the full report — synthesize it."
+        )
+    else:
+        # General task — CEO handles standalone
+        ceo_synthesis_task = user_input
+
+    final = await invoke_agent(
+        ceo_llm, ceo_role, ceo_goal, ceo_back,
+        ceo_synthesis_task,
+        target_url=ceo_config.get("target_url", ""),
+        git_repo=ceo_config.get("git_repo", ""),
+        status_callback=None  # suppress status — we already sent it above
+    )
+    return final
+
+async def get_dynamic_agent_response(role_name, role_goal, role_backstory, user_input, model_name, temperature, target_url="", git_repo="", status_callback=None, ceo_config=None):
+    """
+    Smart routing: If role is CEO, use delegation flow.
+    Otherwise, single-agent direct execution.
+    """
+    if "ceo" in role_name.lower() and ceo_config:
+        return await run_ceo_with_delegation(ceo_config, user_input, status_callback=status_callback)
+    
     llm = get_llm(model_name, temperature, role=role_name)
     return await invoke_agent(llm, role_name, role_goal, role_backstory, user_input, target_url=target_url, git_repo=git_repo, status_callback=status_callback)

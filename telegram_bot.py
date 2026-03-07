@@ -107,7 +107,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             temperature,
             target_url=ceo_config.get("target_url", ""),
             git_repo=ceo_config.get("git_repo", ""),
-            status_callback=status_callback
+            status_callback=status_callback,
+            ceo_config=ceo_config  # enables CEO → specialist delegation
         )
         
         # Cleanup status message before final reply

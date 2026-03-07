@@ -1,6 +1,7 @@
 import os
 import asyncio
-from fastapi import FastAPI
+import json
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from config import settings
@@ -15,7 +16,7 @@ app = FastAPI(title="JAAF - Jeenora AI Agent Framework", version="1.0.0")
 # CORS - Allow React frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["*"], # For flexible local testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,20 +57,47 @@ def get_agents_status():
         ]
     }
 
+# ========================
+# 💬 CHAT & WEBSOCKETS
+# ========================
+
+@app.websocket("/ws/chat")
+async def chat_websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    print("WebSocket Connected")
+    try:
+        while True:
+            data = await websocket.receive_text()
+            user_msg = json.loads(data).get("message")
+            
+            # Use Support Agent for response
+            support_task = Task(
+                description=f"Reply to this customer query based on Jeenora business values: {user_msg}.",
+                agent=support_agent,
+                expected_output="A polite and helpful customer response."
+            )
+            crew = Crew(agents=[support_agent], tasks=[support_task])
+            result = crew.kickoff()
+            
+            # Send back response
+            await websocket.send_text(json.dumps({"success": True, "reply": str(result)}))
+    except WebSocketDisconnect:
+        print("WebSocket Disconnected")
+
 class ChatMessage(BaseModel):
     message: str
 
 @app.post("/api/chat")
 async def customer_chat(payload: ChatMessage):
-    """Customer Support Chat - AI Reply."""
+    """Fallback HTTP Chat - AI Reply."""
     support_task = Task(
         description=f"Reply to this customer query: {payload.message}",
         agent=support_agent,
         expected_output="A polite and helpful customer response."
     )
     crew = Crew(agents=[support_agent], tasks=[support_task])
-    response = crew.kickoff()
-    return {"success": True, "reply": str(response)}
+    result = crew.kickoff()
+    return {"success": True, "reply": str(result)}
 
 @app.post("/api/ceo/run")
 async def run_ceo_cycle():

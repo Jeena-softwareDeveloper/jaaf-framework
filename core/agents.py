@@ -1,13 +1,16 @@
 from crewai import Agent
-from langchain_community.llms import Ollama
+from langchain_community.chat_models import ChatOllama
 from config import settings
 import os
 
 # CrewAI requires this env var (set dummy if not using OpenAI)
 os.environ["OPENAI_API_KEY"] = "sk-dummy-not-used"
 
-# Use Local Ollama model - FREE, No API Cost!
-llm = Ollama(model="llama3.1:8b")
+# Use Local Ollama model - gpt-oss:120b (FREE, No API Cost!)
+llm = ChatOllama(
+    model="gpt-oss:120b",
+    base_url=settings.OLLAMA_URL
+)
 
 # 1. THE CEO AGENT
 ceo_agent = Agent(

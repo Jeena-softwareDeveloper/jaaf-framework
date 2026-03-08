@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --bg-main: #0a0a0f;
+        --bg-side: #11111d;
+        --card-bg: rgba(26, 26, 46, 0.7);
+        --accent: #8b5cf6;
+        --accent-hover: #7c3aed;
+        --text-primary: #f1f1f7;
+        --text-secondary: #94a3b8;
+        --glass: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.1);
+        --success: #10b981;
+    }
+
+    body {
+        @apply bg-bg-main text-text-primary font-sans antialiased overflow-hidden;
+    }
+}
+
+@layer components {
+    .glass-card {
+        @apply bg-card-bg backdrop-blur-xl border border-white/10 rounded-[24px] shadow-2xl transition-all duration-300;
+    }
+
+    .glass-card:hover {
+        @apply -translate-y-1;
+        box-shadow: 0 15px 40px rgba(139, 92, 246, 0.1);
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-br from-accent to-accent-hover text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-accent/30 hover:brightness-110 hover:shadow-accent/40 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .input-field {
+        @apply bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white outline-none focus:border-accent focus:bg-accent/5 transition-all;
+    }
+
+    /* Fix for select dropdown options visibility */
+    select.input-field option,
+    select.input-field optgroup {
+        @apply bg-[#1a1a2e] text-white py-2;
+        background-color: #1a1a2e;
+        /* Fallback for browsers */
+        color: white;
+    }
+
+    select.input-field optgroup {
+        @apply font-bold text-accent italic;
+        background-color: #0d0d1a;
+    }
+}

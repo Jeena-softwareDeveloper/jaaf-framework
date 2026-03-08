@@ -1,0 +1,12 @@
+crewai
+langchain-community
+langchain-groq
+pymongo
+python-dotenv
+beautifulsoup4
+duckduckgo-search
+python-telegram-bot
+fastapi
+uvicorn
+pydantic
+websockets

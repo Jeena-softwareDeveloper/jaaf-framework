@@ -1,0 +1,47 @@
+/* Modern Overrides & Global Utilities */
+:root {
+  --accent: #8b5cf6;
+  --bg-main: #0a0a0f;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* Animations */
+@keyframes glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.3));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.6));
+  }
+}
+
+.drop-shadow-glow {
+  animation: glow 3s infinite;
+}
+
+/* Utility for text gradients if tailwind version doesn't support it directly */
+.text-gradient {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

@@ -176,27 +176,15 @@ ALL_TOOLS = [
 ]
 
 def get_llm(model_name=None, temp=0.7, role=None, use_tools=True):
-    model = model_name or os.getenv("DEFAULT_MODEL", "gpt-oss:1200b-cloud")
-    
-    # Ensure we use ChatGoogleGenerativeAI if a gemini model is requested AND key exists
+    model = model_name or "gemini-1.5-flash"
     api_key = os.getenv("GOOGLE_API_KEY")
-    if "gemini" in model.lower() and api_key and "YOUR" not in api_key:
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        llm = ChatGoogleGenerativeAI(
-            model=model,
-            google_api_key=api_key,
-            temperature=temp
-        )
-    else:
-        # Fallback to Ollama if no gemini requested or no key found
-        if "gemini" in model.lower():
-            model = os.getenv("DEFAULT_MODEL", "gpt-oss:1200b-cloud")
-            
-        llm = ChatOllama(
-            model=model,
-            base_url=settings.OLLAMA_URL,
-            temperature=temp
-        )
+    
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    llm = ChatGoogleGenerativeAI(
+        model=model,
+        google_api_key=api_key,
+        temperature=temp
+    )
     
     if not use_tools:
         return llm

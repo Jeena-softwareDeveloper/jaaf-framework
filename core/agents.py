@@ -577,7 +577,7 @@ async def run_ceo_with_delegation(ceo_config, user_input, status_callback=None):
         # One clean LLM call — no tools, no loop
         from langchain_google_genai import ChatGoogleGenerativeAI
         direct_llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash",
+            model="gemini-1.5-flash",
             google_api_key=os.getenv("GOOGLE_API_KEY"),
             temperature=0.4
         )

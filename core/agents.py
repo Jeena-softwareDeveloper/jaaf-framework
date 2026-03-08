@@ -556,41 +556,50 @@ async def run_ceo_with_delegation(ceo_config, user_input, status_callback=None):
 
     elif task_type == "agent_list":
         if status_callback:
-            await status_callback("📋 *CEO checking team status...*")
+            await status_callback("📋 *CEO checking team...*")
 
-        # Direct hardcoded response info — no LLM loop needed
-        agent_status = []
+        agent_data = []
         for role_name, tools in ROLE_TOOLS.items():
-            tool_names = [t.name for t in tools]
-            agent_status.append({
-                "name": role_name,
-                "tools": tool_names,
-                "tool_count": len(tool_names)
-            })
+            agent_data.append(f"{role_name}: {len(tools)} tools")
 
-        # One clean LLM call — no tools, no loop
-        direct_llm = get_llm(ceo_model, 0.4, use_tools=False)
+        # Using 1.5-flash as 2.5-flash doesn't exist
+        direct_llm = get_llm("gemini-1.5-flash", 0.7, use_tools=False)
 
         prompt = f"""Owner sir asked: "{user_input}"
 
-Here is the real agent data:
-{json.dumps(agent_status, indent=2)}
+Agent data:
+{chr(10).join(agent_data)}
 
-Reply as CEO Agent in Thanglish. List each agent with:
-- Name and role
-- How many tools they have  
-- What they can do in 1 line
-- Status: Active ✅
+Reply exactly like this style — WhatsApp message from a real CEO to his boss:
 
-Be warm, direct. No internal thoughts. No phases. Just the answer.
-End with: "Ella agents ready sir! Ena venum sollunga 🚀"
-"""
+---
+Good morning Owner sir! 👋 Namma full team ready — itho status:
+
+🧠 CEO — Master coordinator, reports + alerts + web research handle pannuven
+🔍 Rajesh (SEO) — Website audit, rankings, keywords — full SEO sir
+💻 Karthik (Dev) — Site speed, bugs, technical issues — ready
+📣 Priya (Marketing) — Campaigns, trends, content — set sir
+💰 Anand (Finance) — Sales reports, cash flow — monitor pannuran
+🏭 COO — Inventory + CRM leads — operations side ready
+⚙️ CTO — Technical architecture — standby
+📊 CFO — Financial reports — ready
+📢 CMO — Market research, competitors — active
+🌾 Agri Manager — Farm trends, alerts — ready
+👗 Fashion Manager — Stock + trends — active
+🤝 CRM Specialist — Leads + follow-ups — on it
+💬 Customer Support — Queries + sentiment — ready
+
+Ella 13 agents active sir! 🚀 Ena venum, just sollunga.
+---
+
+Follow this EXACT style. One emoji + name + what they do in 5-6 words. 
+Warm, human, WhatsApp feel. No bullet points. No markdown lists."""
 
         response = direct_llm.invoke([
-            ("system", "You are CEO Agent. Reply only in clean Thanglish. No internal reasoning. No phases. Just answer directly."),
+            ("system", "You are CEO Agent texting your boss on WhatsApp. Warm, crisp, human. No bullet points. No markdown lists. Reply only in Thanglish."),
             ("human", prompt)
         ])
-        
+
         return _get_str_content(response)
 
     elif task_type in ["briefing", "growth_delegation", "financial_crisis"]:

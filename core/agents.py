@@ -176,16 +176,22 @@ ALL_TOOLS = [
 ]
 
 def get_llm(model_name=None, temp=0.7, role=None, use_tools=True):
-    model = model_name or "gemini-2.5-flash"
-    # Ensure we use ChatGoogleGenerativeAI if a gemini model is requested
-    if "gemini" in model.lower():
+    model = model_name or os.getenv("DEFAULT_MODEL", "gpt-oss:1200b-cloud")
+    
+    # Ensure we use ChatGoogleGenerativeAI if a gemini model is requested AND key exists
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if "gemini" in model.lower() and api_key and "YOUR" not in api_key:
         from langchain_google_genai import ChatGoogleGenerativeAI
         llm = ChatGoogleGenerativeAI(
             model=model,
-            google_api_key=os.getenv("GOOGLE_API_KEY"),
+            google_api_key=api_key,
             temperature=temp
         )
     else:
+        # Fallback to Ollama if no gemini requested or no key found
+        if "gemini" in model.lower():
+            model = os.getenv("DEFAULT_MODEL", "gpt-oss:1200b-cloud")
+            
         llm = ChatOllama(
             model=model,
             base_url=settings.OLLAMA_URL,
@@ -335,7 +341,7 @@ Formulate a master strategy. Use tools for market research if needed."""
 
 def get_agent_response(role_key, user_input):
     """Simple chat with tools disabled for speed."""
-    llm = get_llm("gemini-2.5-flash", 0.7, use_tools=False)
+    llm = get_llm(None, 0.7, use_tools=False)
     messages = [("system", f"You are a Jeenora {role_key}."), ("human", user_input)]
     return _get_str_content(llm.invoke(messages))
 

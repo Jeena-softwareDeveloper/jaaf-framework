@@ -208,7 +208,7 @@ async def invoke_agent(llm_with_tools, role, goal, backstory, task_description, 
     ADVANCED AGENTIC LOOP: Implements recursive self-correction, strategic planning,
     and multi-step tool verification for 'Bayangara Advanced' intelligence.
     """
-    config_context = ""
+    config_context = "Company Websites: jeenora.com, hire.jeenora.com\n"
     if target_url: config_context += f"Target Website: {target_url}\n"
     if git_repo: config_context += f"Git Repository: {git_repo}\n"
 

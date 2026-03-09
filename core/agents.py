@@ -248,6 +248,13 @@ COMMUNICATION STYLE (MASTER RULES):
 - Be specific with numbers/metrics (e.g., "38% drop", "₹20k budget").
 - Reference other agents (e.g., "Karthik sir fix pannanum").
 - Sound like a human in a WhatsApp group meeting.
+
+CRITICAL RULES:
+- Speak in YOUR OWN VOICE only.
+- Max 3-4 lines per response. No long paragraphs.
+- Give YOUR department numbers/metrics only.
+- Reference one other agent max.
+- End with one clear ask or action.
 """
 
     messages = [
@@ -421,34 +428,37 @@ async def run_group_discussion(ceo_config, user_input, roles_config, status_call
     """
     transcript = []
     
-    # 1. CEO Briefing
+    # 1. CEO Briefing (EXTREMELY CRISP)
     if status_callback: await status_callback("👑 *CEO calling the meeting...*")
     ceo_prompt = (
         f"The Owner sir has a concern: '{user_input}'. "
-        f"Call the meeting. Summarize the problem in 1 line. "
-        f"Call Rajesh, Karthik, Priya, and Anand by name. Speak in Thanglish."
+        f"Call the meeting. Summarize the problem in 2 lines. "
+        f"Call Rajesh, Ramesh, Priya, and Anand by name. Speak in Thanglish. "
+        f"CRITICAL: Max 3 lines total. Stop after calling the team."
     )
     ceo_intro = await invoke_agent(get_llm(role="CEO"), "CEO Agent", "Coordinate team", "Master Coordinator", ceo_prompt)
     transcript.append(f"👑 **CEO**: {ceo_intro}")
     
-    # 2. Sequential Agent Updates
+    # 2. Sequential Agent Updates (OWN VOICES)
     for role_name, config in roles_config.items():
         if status_callback: await status_callback(f"🗣️ *{role_name} is joining...*")
         agent_llm = get_llm(role=role_name, use_tools=False)
         agent_task = (
             f"CONTEXT: Meeting about '{user_input}'. "
-            f"PREVIOUS DEBATE: {' | '.join(transcript[-2:])}. "
+            f"PREVIOUS DEBATE: {' | '.join(transcript[-1:])}. "
             f"TASK: Provide your update as {role_name}. {config['backstory']} "
-            f"Use specific metrics. Connect with {config['buddy']}. Thanglish only."
+            f"Use specific metrics. Connect with {config['buddy']}. Thanglish only. "
+            f"CRITICAL: Max 4 lines. Own voice only."
         )
         response = await invoke_agent(agent_llm, role_name, config['goal'], config['backstory'], agent_task)
         transcript.append(f"👤 **{role_name}**: {response}")
 
-    # 3. CEO Synthesis & Action Plan
+    # 3. CEO Synthesis & Action Plan (FINAL ONLY)
     if status_callback: await status_callback("📝 *CEO synthesizing final plan...*")
     synthesis_prompt = (
         f"Review the full transcript: {' '.join(transcript)}. "
         f"Create a priority action plan. Week 1, 2, 3 tasks. Who does what. "
+        f"CRITICAL: Max 4 lines total. No repetition. "
         f"End with a clear 'Approve pannuveengala sir?' in Thanglish."
     )
     final_plan = await invoke_agent(get_llm(role="CEO"), "CEO Agent", "Final Synthesis", "Master Decider", synthesis_prompt)
@@ -655,25 +665,25 @@ Follow this EXACT style. Group by Tiers. Warm, human, WhatsApp feel. No bullet p
     elif task_type in ["briefing", "growth_delegation", "financial_crisis"]:
         # MASTER MEETING CONFIGURATION
         roles_config = {
-            "Rajesh (SEO Agent)": {
+            "Rajesh (SEO Specialist)": {
                 "goal": "Recover organic traffic",
-                "backstory": "Hardworking, worried tone. Site is slow, rank is dropping. Needs Karthik's help.",
-                "buddy": "Karthik"
+                "backstory": "Optimistic but realistic. Organic traffic is dropping due to site latency. Target: 42% recovery.",
+                "buddy": "Ramesh (Senior Developer)"
             },
-            "Karthik (Developer Agent)": {
+            "Ramesh (Senior Developer)": {
                 "goal": "Fix technical bottlenecks",
-                "backstory": "Frustrated with low resources. Page load is slow. Needs AWS budget. Connects to Priya's ad waste.",
-                "buddy": "Priya"
+                "backstory": "Straight to the point. Site takes 6s to load. Need infra budget. Without this, marketing is waste.",
+                "buddy": "Priya (Marketing Manager)"
             },
-            "Priya (Marketing Agent)": {
+            "Priya (Marketing Manager)": {
                 "goal": "Scale revenue and CTR",
-                "backstory": "Bold and assertive. Campaign is ready but stalled. Performance depends on Karthik's speed.",
-                "buddy": "Karthik"
+                "backstory": "Confident. Ad campaigns ready but bounce rate high due to speed. Need Ramesh to fix site first.",
+                "buddy": "Anand (Finance Agent)"
             },
             "Anand (Finance Agent)": {
                 "goal": "Stabilize cash flow",
-                "backstory": "Voicing financial reality. Runway is short. Focus on pending invoices collection.",
-                "buddy": "Priya"
+                "backstory": "Protecting the bank. ₹4.8L invoices pending. Burn rate is tight. Focus on collection.",
+                "buddy": "Priya (Marketing Manager)"
             }
         }
         specialist_report = await run_group_discussion(ceo_config, user_input, roles_config, status_callback=status_callback)

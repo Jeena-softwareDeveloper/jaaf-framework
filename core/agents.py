@@ -153,12 +153,12 @@ ROLE_TOOLS = {
     "CFO": [sales_reporter, trend_analyzer, telegram_alert],
     
     # TIER 2 - TECHNICAL TEAM (3)
-    "Karthik (Senior Developer)": [pagespeed_checker, website_scraper, check_system_logs, analyze_website_full, web_search],
+    "Rajesh (Senior Developer)": [pagespeed_checker, website_scraper, check_system_logs, analyze_website_full, web_search],
     "DevOps Agent": [pagespeed_checker, check_system_logs, telegram_alert],
     "Security Agent": [check_system_logs, telegram_alert, web_search],
     
     # TIER 3 - MARKETING & GROWTH (4)
-    "Rajesh (SEO Specialist)": [analyze_website_full, website_scraper, seo_analyzer, competitor_finder, keyword_researcher, broken_link_finder, pagespeed_checker],
+    "Karthick (SEO Specialist)": [analyze_website_full, website_scraper, seo_analyzer, competitor_finder, keyword_researcher, broken_link_finder, pagespeed_checker],
     "Priya (Marketing Manager)": [web_search, competitor_finder, keyword_researcher, trend_analyzer, blog_idea_generator, sentiment_analyzer],
     "Competitor Agent": [competitor_finder, web_search, trend_analyzer],
     "Email Marketing Agent": [telegram_alert, sentiment_analyzer, web_search],
@@ -604,12 +604,12 @@ Good morning Owner sir! 👋 Team perusa aayiduchu! Total 26 agents in 8 Tiers r
 � CFO — Money control
 
 🔧 TIER 2 — TECHNICAL 
-💻 Karthik — Senior Dev (Bugs + Speed)
+💻 Rajesh — Senior Dev (Bugs + Speed)
 ⚙️ DevOps — Infrastructure
 🔐 Security — Protection
 
 📈 TIER 3 — GROWTH
-🔍 Rajesh — SEO Specialist
+🔍 Karthick — SEO Specialist
 📣 Priya — Marketing Manager
 🥊 Competitor — Market intelligence
 📧 Email Marketing — Campaigns

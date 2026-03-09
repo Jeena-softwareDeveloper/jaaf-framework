@@ -1,0 +1,31 @@
+{
+  "company": {
+    "name": "Jeenora Group",
+    "industry": "E-commerce, Agriculture, and Job Consultancy",
+    "type": "Cloths, Farmer products sales, Products sales, for exactra...",
+    "websites": ["jeenora.com", "hire.jeenora.com"],
+    "monthly_target": 100000,
+    "current_monthly_revenue": 0,
+    "team_size": 1,
+    "owner_role": "Owner"
+  },
+  "finance": {
+    "current_balance": 0,
+    "monthly_burn": 0,
+    "pending_invoices": 0,
+    "last_3_months_revenue": [0, 0, 0]
+  },
+  "marketing": {
+    "monthly_traffic": 0,
+    "main_keyword_rank": 0,
+    "ad_spend": 1000,
+    "social_followers": 5000,
+    "email_list": 0
+  },
+  "sales": {
+    "leads_this_month": 0,
+    "converted": 0,
+    "pipeline_value": 0,
+    "avg_deal_size": 0
+  }
+}

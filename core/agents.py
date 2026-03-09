@@ -153,12 +153,12 @@ ROLE_TOOLS = {
     "CFO": [sales_reporter, trend_analyzer, telegram_alert],
     
     # TIER 2 - TECHNICAL TEAM (3)
-    "Rajesh (Senior Developer)": [pagespeed_checker, website_scraper, check_system_logs, analyze_website_full, web_search],
+    "Ramesh (Senior Developer)": [pagespeed_checker, website_scraper, check_system_logs, analyze_website_full, web_search],
     "DevOps Agent": [pagespeed_checker, check_system_logs, telegram_alert],
     "Security Agent": [check_system_logs, telegram_alert, web_search],
     
     # TIER 3 - MARKETING & GROWTH (4)
-    "Karthick (SEO Specialist)": [analyze_website_full, website_scraper, seo_analyzer, competitor_finder, keyword_researcher, broken_link_finder, pagespeed_checker],
+    "Rajesh (SEO Specialist)": [analyze_website_full, website_scraper, seo_analyzer, competitor_finder, keyword_researcher, broken_link_finder, pagespeed_checker],
     "Priya (Marketing Manager)": [web_search, competitor_finder, keyword_researcher, trend_analyzer, blog_idea_generator, sentiment_analyzer],
     "Competitor Agent": [competitor_finder, web_search, trend_analyzer],
     "Email Marketing Agent": [telegram_alert, sentiment_analyzer, web_search],
@@ -596,20 +596,20 @@ Agent data:
 Reply exactly like this style — WhatsApp message from a real CEO to his boss showing the 26 agents in 8 Tiers:
 
 ---
-Good morning Owner sir! 👋 Team perusa aayiduchu! Total 26 agents in 8 Tiers ready:
+Good morning Owner sir! 👋 Jeenora Group team ready! Our target is 1L revenue. Total 26 agents in 8 Tiers ready:
 
 🏢 TIER 1 — LEADERSHIP
 🧠 CEO — Master brain
 🏭 COO — Operations (Daily business)
-� CFO — Money control
+�💰 CFO — Finance (1L Target monitor)
 
 🔧 TIER 2 — TECHNICAL 
-💻 Rajesh — Senior Dev (Bugs + Speed)
+💻 Ramesh — Senior Dev (Bugs + Speed)
 ⚙️ DevOps — Infrastructure
 🔐 Security — Protection
 
 📈 TIER 3 — GROWTH
-🔍 Karthick — SEO Specialist
+🔍 Rajesh — SEO Specialist
 📣 Priya — Marketing Manager
 🥊 Competitor — Market intelligence
 📧 Email Marketing — Campaigns
@@ -617,15 +617,15 @@ Good morning Owner sir! 👋 Team perusa aayiduchu! Total 26 agents in 8 Tiers r
 💼 TIER 4 — SALES/CRM
 🤝 CRM Agent — Leads management
 📞 Sales Agent — Revenue closer
-� Customer Support — Queries
+�💬 Customer Support — Queries
 
 🏭 TIER 5 — BUSINESS SPECIFIC
-🌾 Agri Manager — Farm trends
-👗 Fashion Manager — Stock trends
+🌾 Agri Manager — Farmer products
+👗 Fashion Manager — Cloths sales
 🏠 Real Estate — Market rates
-🎓 Training Agent — Skill dev
+🎓 Training Agent — Job Consultancy
 
-� TIER 6 — INTELLIGENCE
+�🧠 TIER 6 — INTELLIGENCE
 🧬 Memory Agent — System brain
 📡 Monitor Agent — 24/7 Watchdog
 🔮 Prediction Agent — Forecaster
@@ -640,7 +640,7 @@ Good morning Owner sir! 👋 Team perusa aayiduchu! Total 26 agents in 8 Tiers r
 ✅ Quality Agent — Output check
 📋 Compliance Agent — Rules keeper
 
-Ellarum active-ah irukaanga sir! 🚀 Ena venum, just sollunga.
+Cloth sales, Agri products, and Consultancy check pannura team active sir! 🚀 Ena venum, just sollunga.
 ---
 
 Follow this EXACT style. Group by Tiers. Warm, human, WhatsApp feel. No bullet points. No markdown list characters like * or -. Only emojis and crisp lines."""

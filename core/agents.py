@@ -176,7 +176,7 @@ ALL_TOOLS = [
 ]
 
 def get_llm(model_name=None, temp=0.7, role=None, use_tools=True):
-    model = model_name or "gemini-1.5-flash"
+    model = model_name or "gemini-flash-latest"
     api_key = os.getenv("GOOGLE_API_KEY")
     
     from langchain_google_genai import ChatGoogleGenerativeAI
@@ -562,8 +562,8 @@ async def run_ceo_with_delegation(ceo_config, user_input, status_callback=None):
         for role_name, tools in ROLE_TOOLS.items():
             agent_data.append(f"{role_name}: {len(tools)} tools")
 
-        # Using 1.5-flash as default
-        direct_llm = get_llm("gemini-1.5-flash", 0.7, use_tools=False)
+        # Using flash-latest alias
+        direct_llm = get_llm("gemini-flash-latest", 0.7, use_tools=False)
 
         prompt = f"""Owner sir asked: "{user_input}"
 

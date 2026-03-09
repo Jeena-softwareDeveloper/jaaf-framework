@@ -145,26 +145,49 @@ def competitor_finder(topic: str = "", niche: str = "", domain: str = "", query:
     t = _pick(topic, niche, domain, query, keyword)
     return ExternalTools.find_competitors(t)
 
-# FULL GRANULAR ROLE MAPPING
+# 26 AGENTS / 8 TIERS BUSINESS OS MAPPING
 ROLE_TOOLS = {
-    # Core Leadership
+    # TIER 1 - CORE LEADERSHIP (3)
     "CEO": [compile_report, telegram_alert, web_search, check_system_logs, analyze_website_full, keyword_researcher, seo_analyzer],
-    
-    # Named Strategic Agents (Master Personas)
-    "Rajesh (SEO Agent)": [analyze_website_full, website_scraper, seo_analyzer, competitor_finder, keyword_researcher, broken_link_finder, pagespeed_checker],
-    "Karthik (Developer Agent)": [website_scraper, seo_analyzer, broken_link_finder, pagespeed_checker, check_system_logs, web_search],
-    "Priya (Marketing Agent)": [web_search, competitor_finder, keyword_researcher, trend_analyzer, blog_idea_generator, sentiment_analyzer],
-    "Anand (Finance Agent)": [sales_reporter, trend_analyzer, web_search, check_system_logs],
-    
-    # Generic Roles for backward compatibility
     "COO": [inventory_checker, crm_lead_tracker, sales_reporter, check_system_logs],
-    "CTO": [website_scraper, seo_analyzer, broken_link_finder, pagespeed_checker, check_system_logs, analyze_website_full],
-    "CFO": [sales_reporter, trend_analyzer],
-    "CMO": [web_search, competitor_finder, keyword_researcher, trend_analyzer],
+    "CFO": [sales_reporter, trend_analyzer, telegram_alert],
+    
+    # TIER 2 - TECHNICAL TEAM (3)
+    "Karthik (Senior Developer)": [pagespeed_checker, website_scraper, check_system_logs, analyze_website_full, web_search],
+    "DevOps Agent": [pagespeed_checker, check_system_logs, telegram_alert],
+    "Security Agent": [check_system_logs, telegram_alert, web_search],
+    
+    # TIER 3 - MARKETING & GROWTH (4)
+    "Rajesh (SEO Specialist)": [analyze_website_full, website_scraper, seo_analyzer, competitor_finder, keyword_researcher, broken_link_finder, pagespeed_checker],
+    "Priya (Marketing Manager)": [web_search, competitor_finder, keyword_researcher, trend_analyzer, blog_idea_generator, sentiment_analyzer],
+    "Competitor Agent": [competitor_finder, web_search, trend_analyzer],
+    "Email Marketing Agent": [telegram_alert, sentiment_analyzer, web_search],
+    
+    # TIER 4 - SALES & CRM (3)
+    "CRM Agent": [crm_lead_tracker, telegram_alert, sentiment_analyzer, sales_reporter],
+    "Sales Agent": [sales_reporter, telegram_alert, sentiment_analyzer, web_search],
+    "Customer Support Agent": [web_search, telegram_alert, sentiment_analyzer],
+    
+    # TIER 5 - BUSINESS SPECIFIC (4)
     "Agri Manager": [web_search, trend_analyzer, telegram_alert],
     "Fashion Manager": [inventory_checker, trend_analyzer, web_search, competitor_finder],
-    "CRM Specialist": [crm_lead_tracker, telegram_alert, sentiment_analyzer],
-    "Customer Support": [web_search, telegram_alert, sentiment_analyzer]
+    "Real Estate Agent": [web_search, trend_analyzer, telegram_alert],
+    "Training Agent": [web_search, blog_idea_generator],
+    
+    # TIER 6 - INTELLIGENCE LAYER (4)
+    "Memory Agent": [web_search, check_system_logs],
+    "Monitor Agent": [check_system_logs, telegram_alert, pagespeed_checker],
+    "Prediction Agent": [trend_analyzer, sales_reporter, web_search],
+    "News & Trends Agent": [news_fetcher, trend_analyzer, web_search],
+    
+    # TIER 7 - AUTOMATION LAYER (3)
+    "Automation Agent": [telegram_alert, check_system_logs],
+    "Document Agent": [compile_report, web_search],
+    "Integration Agent": [web_search, telegram_alert],
+    
+    # TIER 8 - QUALITY & COMPLIANCE (2)
+    "Quality Agent": [sentiment_analyzer, web_search],
+    "Compliance Agent": [web_search, check_system_logs]
 }
 
 ALL_TOOLS = [
@@ -570,30 +593,57 @@ async def run_ceo_with_delegation(ceo_config, user_input, status_callback=None):
 Agent data:
 {chr(10).join(agent_data)}
 
-Reply exactly like this style — WhatsApp message from a real CEO to his boss:
+Reply exactly like this style — WhatsApp message from a real CEO to his boss showing the 26 agents in 8 Tiers:
 
 ---
-Good morning Owner sir! 👋 Namma full team ready — itho status:
+Good morning Owner sir! 👋 Team perusa aayiduchu! Total 26 agents in 8 Tiers ready:
 
-🧠 CEO — Master coordinator, reports + alerts + web research handle pannuven
-🔍 Rajesh (SEO) — Website audit, rankings, keywords — full SEO sir
-💻 Karthik (Dev) — Site speed, bugs, technical issues — ready
-📣 Priya (Marketing) — Campaigns, trends, content — set sir
-💰 Anand (Finance) — Sales reports, cash flow — monitor pannuran
-🏭 COO — Inventory + CRM leads — operations side ready
-⚙️ CTO — Technical architecture — standby
-📊 CFO — Financial reports — ready
-📢 CMO — Market research, competitors — active
-🌾 Agri Manager — Farm trends, alerts — ready
-👗 Fashion Manager — Stock + trends — active
-🤝 CRM Specialist — Leads + follow-ups — on it
-💬 Customer Support — Queries + sentiment — ready
+🏢 TIER 1 — LEADERSHIP
+🧠 CEO — Master brain
+🏭 COO — Operations (Daily business)
+� CFO — Money control
 
-Ella 13 agents active sir! 🚀 Ena venum, just sollunga.
+🔧 TIER 2 — TECHNICAL 
+💻 Karthik — Senior Dev (Bugs + Speed)
+⚙️ DevOps — Infrastructure
+🔐 Security — Protection
+
+📈 TIER 3 — GROWTH
+🔍 Rajesh — SEO Specialist
+📣 Priya — Marketing Manager
+🥊 Competitor — Market intelligence
+📧 Email Marketing — Campaigns
+
+💼 TIER 4 — SALES/CRM
+🤝 CRM Agent — Leads management
+📞 Sales Agent — Revenue closer
+� Customer Support — Queries
+
+🏭 TIER 5 — BUSINESS SPECIFIC
+🌾 Agri Manager — Farm trends
+👗 Fashion Manager — Stock trends
+🏠 Real Estate — Market rates
+🎓 Training Agent — Skill dev
+
+� TIER 6 — INTELLIGENCE
+🧬 Memory Agent — System brain
+📡 Monitor Agent — 24/7 Watchdog
+🔮 Prediction Agent — Forecaster
+📰 News & Trends — Market impacts
+
+🔄 TIER 7 — AUTOMATION
+⚡ Automation — Task robotics
+� Document Agent — File manager
+🔁 Integration — System connector
+
+🛡️ TIER 8 — QUALITY/COMPLIANCE
+✅ Quality Agent — Output check
+📋 Compliance Agent — Rules keeper
+
+Ellarum active-ah irukaanga sir! 🚀 Ena venum, just sollunga.
 ---
 
-Follow this EXACT style. One emoji + name + what they do in 5-6 words. 
-Warm, human, WhatsApp feel. No bullet points. No markdown lists."""
+Follow this EXACT style. Group by Tiers. Warm, human, WhatsApp feel. No bullet points. No markdown list characters like * or -. Only emojis and crisp lines."""
 
         response = direct_llm.invoke([
             ("system", "You are CEO Agent texting your boss on WhatsApp. Warm, crisp, human. No bullet points. No markdown lists. Reply only in Thanglish."),
